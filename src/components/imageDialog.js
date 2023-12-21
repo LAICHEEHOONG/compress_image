@@ -18,6 +18,7 @@ const ImageDialog = () => {
         open={open}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth='md'
       >
         <DialogContent >
           <img
