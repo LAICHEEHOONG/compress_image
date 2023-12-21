@@ -5,7 +5,7 @@ const FourOFour = () => {
     const navigate = useNavigate();
 
     const toHomePage = () => {
-        navigate('/')
+        navigate('/compress_image')
     }
 
   return (

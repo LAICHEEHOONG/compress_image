@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,11 +22,6 @@ const drawerWidth = 240;
 
 function DrawerAppBar(props) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const toImagePage = () => {
-    navigate("/image");
-  };
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);

@@ -11,9 +11,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />}></Route>
+        <Route path='/compress_image' element={<Home />}></Route>
         {/* <Route path='/image' element={<ImagePage />} ></Route> */}
-        <Route path='*' element={<FourOFour />}></Route>
+        <Route path='/compress_image/*' element={<FourOFour />}></Route>
       </Routes>
     </BrowserRouter>
   );
