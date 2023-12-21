@@ -10,8 +10,8 @@ import {
   progressReset,
   progressPercent,
 } from "../features/progress/progressSlice";
-import StandardImageList from "./imageList";
 import NewImageList from "./newImageList";
+import { setAlertStatus, setAlertText } from "../features/parameter/parameterSlice";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -42,14 +42,19 @@ export default function InputFileUpload() {
       img.onload = function () {
         oriW = img.width;
         oriH = img.height;
-
-        // console.log(`Image width: ${width}px`);
-        // console.log(`Image height: ${height}px`);
       };
 
       img.src = URL.createObjectURL(file);
     } else {
       console.log("The selected file is not an image.");
+      dispatch(setAlertText('The selected file is not an image.'));
+      dispatch(setAlertStatus(true));
+      dispatch(progressReset())
+      setTimeout(() => {
+        dispatch(setAlertText(''));
+        dispatch(setAlertStatus(false));
+      }, 8000)
+      return;
     }
 
     dispatch(progressPercent(10));
