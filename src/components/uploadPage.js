@@ -4,6 +4,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InputFileUpload from "./uploadFile";
 import LinearWithValueLabel from "./progress";
 import ParametersFields from "./parameters";
+import Linear from "./linear";
 
 const UploadPage = () => {
   const progressOpen = useSelector((state) => state.progress.open);
@@ -27,7 +28,8 @@ const UploadPage = () => {
       </div>
       <ParametersFields />
 
-      {progressOpen ? <LinearWithValueLabel /> : <InputFileUpload />}
+      {progressOpen ? <Linear /> : <InputFileUpload />}
+      {/* <InputFileUpload /> */}
     </div>
   );
 };

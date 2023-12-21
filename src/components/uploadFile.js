@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addImage, addCompressWH, mergeData } from "../features/image_/imageSlice";
+import {
+  addImage,
+  addCompressWH,
+  mergeData,
+} from "../features/image_/imageSlice";
 import Button from "@mui/joy/Button";
 import SvgIcon from "@mui/joy/SvgIcon";
 import { styled } from "@mui/joy";
@@ -11,7 +15,10 @@ import {
   progressPercent,
 } from "../features/progress/progressSlice";
 import NewImageList from "./newImageList";
-import { setAlertStatus, setAlertText } from "../features/parameter/parameterSlice";
+import {
+  setAlertStatus,
+  setAlertText,
+} from "../features/parameter/parameterSlice";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -30,76 +37,141 @@ export default function InputFileUpload() {
   const urls = useSelector((state) => state.image.urls);
   const dispatch = useDispatch();
 
+  // const handleFileChange2 = async (event) => {
+  //   const file = event.target.files[0];
+
+  //   dispatch(progressOpen(true));
+  //   dispatch(progressPercent(10));
+
+  //   let oriW, oriH, compressW, compressH;
+
+  //   if (file.type.startsWith("image/")) {
+  //     const img = new Image();
+
+  //     img.onload = function () {
+  //       oriW = img.width;
+  //       oriH = img.height;
+  //     };
+
+  //     img.src = URL.createObjectURL(file);
+  //   } else {
+  //     console.log("The selected file is not an image.");
+  //     dispatch(setAlertText("The selected file is not an image."));
+  //     dispatch(setAlertStatus(true));
+  //     dispatch(progressReset());
+  //     setTimeout(() => {
+  //       dispatch(setAlertText(""));
+  //       dispatch(setAlertStatus(false));
+  //     }, 8000);
+  //     return;
+  //   }
+
+  //   dispatch(progressPercent(10));
+  //   if (file === "" || !file) {
+  //     return;
+  //   }
+  //   dispatch(progressPercent(10));
+  //   const resizedImage = await resizeAndConvertToWebP(
+  //     file,
+  //     parameter.width,
+  //     parameter.height,
+  //     parameter.quality,
+  //     parameter.fileType
+  //   );
+
+  //   const compressImage = new Image();
+  //   dispatch(progressPercent(60));
+  //   const compressUrl = URL.createObjectURL(resizedImage);
+  //   compressImage.src = compressUrl;
+  //   compressImage.onload = function () {
+  //     compressW = compressImage.width;
+  //     compressH = compressImage.height;
+  //     dispatch(addCompressWH([compressW, compressH]));
+  //   };
+
+  //   let dataObj = {
+  //     url: URL.createObjectURL(file),
+  //     compressUrl,
+  //     name: file.name,
+  //     oriSize: file.size,
+  //     compressSize: resizedImage.size,
+  //     oriType: file.type,
+  //     compressType: resizedImage.type,
+  //     compressionPercentage: resizedImage.size * (100 / file.size),
+  //     oriWH: [oriW, oriH],
+  //   };
+
+  //   dispatch(addImage(dataObj));
+  //   dispatch(progressPercent(10));
+  //   setTimeout(() => {
+  //     dispatch(progressReset());
+  //   }, 1000);
+  // };
+
   const handleFileChange = async (event) => {
-    dispatch(progressOpen(true));
-    dispatch(progressPercent(10));
-    const file = event.target.files[0];
-    let oriW, oriH, compressW, compressH;
+    const files = event.target.files;
+    // dispatch(progressOpen(true));
+    
 
-    if (file.type.startsWith("image/")) {
-      const img = new Image();
+    for (let i = 0; i < files.length; i++) {
+      dispatch(progressOpen(true));
+      let file = files[i];
+      let oriW, oriH, compressW, compressH;
+      if (file.type.startsWith("image/")) {
+        const img = new Image();
 
-      img.onload = function () {
-        oriW = img.width;
-        oriH = img.height;
+        img.onload = function () {
+          oriW = img.width;
+          oriH = img.height;
+        };
+
+        img.src = URL.createObjectURL(file);
+      } else {
+        console.log("The selected file is not an image.");
+        dispatch(setAlertText("The selected file is not an image."));
+        dispatch(setAlertStatus(true));
+        dispatch(progressReset());
+        setTimeout(() => {
+          dispatch(setAlertText(""));
+          dispatch(setAlertStatus(false));
+        }, 8000);
+        return;
+      }
+      if (file === "" || !file) {
+        return;
+      }
+      const resizedImage = await resizeAndConvertToWebP(
+        file,
+        parameter.width,
+        parameter.height,
+        parameter.quality,
+        parameter.fileType
+      );
+      const compressImage = new Image();
+      const compressUrl = URL.createObjectURL(resizedImage);
+      compressImage.src = compressUrl;
+      compressImage.onload = function () {
+        compressW = compressImage.width;
+        compressH = compressImage.height;
+        dispatch(addCompressWH([compressW, compressH]));
+        let dataObj = {
+          url: URL.createObjectURL(file),
+          compressUrl,
+          name: file.name,
+          oriSize: file.size,
+          compressSize: resizedImage.size,
+          oriType: file.type,
+          compressType: resizedImage.type,
+          compressionPercentage: resizedImage.size * (100 / file.size),
+          oriWH: [oriW, oriH],
+        };
+        dispatch(addImage(dataObj));
+        dispatch(mergeData())
       };
-
-      img.src = URL.createObjectURL(file);
-    } else {
-      console.log("The selected file is not an image.");
-      dispatch(setAlertText('The selected file is not an image.'));
-      dispatch(setAlertStatus(true));
-      dispatch(progressReset())
-      setTimeout(() => {
-        dispatch(setAlertText(''));
-        dispatch(setAlertStatus(false));
-      }, 8000)
-      return;
-    }
-
-    dispatch(progressPercent(10));
-    if (file === "" || !file) {
-      return;
-    }
-    dispatch(progressPercent(10));
-    const resizedImage = await resizeAndConvertToWebP(
-      file,
-      parameter.width,
-      parameter.height,
-      parameter.quality,
-      parameter.fileType
-    );
-
-    const compressImage = new Image();
-
-    dispatch(progressPercent(60));
-    const compressUrl = URL.createObjectURL(resizedImage);
-    compressImage.src = compressUrl;
-    compressImage.onload = function () {
-      compressW = compressImage.width;
-      compressH = compressImage.height;
-      dispatch(addCompressWH([compressW, compressH]));
-    };
-
-    let dataObj = {
-      url: URL.createObjectURL(file),
-      compressUrl,
-      name: file.name,
-      oriSize: file.size,
-      compressSize: resizedImage.size,
-      oriType: file.type,
-      compressType: resizedImage.type,
-      compressionPercentage: resizedImage.size * (100 / file.size),
-      oriWH: [oriW, oriH],
-    };
-
-    dispatch(addImage(dataObj));
-
-    dispatch(progressPercent(10));
-    // dispatch(mergeData())
-    setTimeout(() => {
+    
       dispatch(progressReset());
-    }, 1000);
+    }
+    // dispatch(progressReset());
   };
 
   return (
@@ -110,7 +182,6 @@ export default function InputFileUpload() {
         tabIndex={-1}
         variant="outlined"
         color="neutral"
-        // onClick={handleUpload}
         startDecorator={
           <SvgIcon>
             <svg
@@ -130,12 +201,10 @@ export default function InputFileUpload() {
         }
       >
         Upload a image
-        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+        <VisuallyHiddenInput type="file" onChange={handleFileChange} multiple />
       </Button>
 
       {urls.length > 0 ? <NewImageList /> : null}
-
-      {/* {urls.length > 0 ? <StandardImageList /> : null} */}
     </>
   );
 }
