@@ -53,5 +53,5 @@
     "tailwindcss": "^3.3.6"
   },
   "proxy": "http://localhost:1337/",
-  "homepage": "https://laicheehoong.github.io/compress"
+  "homepage": "https://laicheehoong.github.io/compress_image"
 }
