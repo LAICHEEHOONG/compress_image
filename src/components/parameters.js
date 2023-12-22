@@ -27,7 +27,6 @@ export default function ParametersFields() {
 
   const handleWidthInputChange = (event) => {
     let numStatus = Number(event.target.value);
-    console.log(numStatus)
     if (numStatus <= 0) {
       dispatch(setAlertStatus(true));
       dispatch(setAlertText("The input box does not accept 0 or less than 0"));

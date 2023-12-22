@@ -10,6 +10,7 @@ import {
 import { bytesToMB } from "../util/tool";
 import { dialogURL, dialogOpen } from "../features/dialog/dialogSlice";
 
+
 export default function StandardImageList() {
   const dispatch = useDispatch();
   const oriUrls = useSelector((state) => state.image.urls);
@@ -52,6 +53,7 @@ export default function StandardImageList() {
                 src={url}
                 alt={` ${index + 1}`}
               />
+
               <ImageListItemBar
                 title={`
                    Type: ${oriTypes[index].substring(6)} , 
@@ -77,7 +79,7 @@ export default function StandardImageList() {
                 src={url}
                 alt={` ${index + 1}`}
               />
-          
+
               <ImageListItemBar
                 title={`
                 Type: ${compressTypes[index].substring(6)} , 
@@ -97,3 +99,5 @@ export default function StandardImageList() {
     </div>
   );
 }
+
+

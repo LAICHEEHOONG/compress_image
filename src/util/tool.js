@@ -1,4 +1,10 @@
-export function resizeAndConvertToWebP(file, maxWidth, maxHeight, quality, imageType) {
+export function resizeAndConvertToWebP(
+  file,
+  maxWidth,
+  maxHeight,
+  quality,
+  imageType
+) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -40,12 +46,18 @@ export function resizeAndConvertToWebP(file, maxWidth, maxHeight, quality, image
         // Add watermark
         ctx.font = `${48 * (width / 1024)}px Arial`;
         ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.fillText('THE NEXT SIX', canvas.width / 2 - (180 * (width / 1024)), canvas.height / 2);
+        ctx.fillText(
+          "THE NEXT SIX",
+          canvas.width / 2 - 180 * (width / 1024),
+          canvas.height / 2
+        );
+        
+    
 
-        if(imageType === 'keep') {
-          imageType = file.type
+        if (imageType === "keep" || !isAppleBrowser()) {
+          imageType = file.type;
         } else {
-          imageType = "image/webp"
+          imageType = "image/webp";
         }
 
         canvas.toBlob(
@@ -53,11 +65,11 @@ export function resizeAndConvertToWebP(file, maxWidth, maxHeight, quality, image
             resolve(blob);
           },
           imageType,
-          // file.type,
-          // "image/webp",
           quality
         );
+
       };
+
 
       image.src = event.target.result;
     };
@@ -65,15 +77,6 @@ export function resizeAndConvertToWebP(file, maxWidth, maxHeight, quality, image
     reader.readAsDataURL(file);
   });
 }
-
-// Example usage:
-// Assume you have an event in your component containing the uploaded file
-// For instance, in your onChange handler for file input:
-// const handleFileChange = async (event) => {
-//   const file = event.target.files[0];
-//   const resizedImage = await resizeAndConvertToWebP(file, 300, 300, 0.8);
-//   // Use the resizedImage blob as needed (e.g., upload it or display it)
-// };
 
 export const bytesToMB = (size) => {
   let result;
@@ -85,3 +88,20 @@ export const bytesToMB = (size) => {
     return `${result.toFixed(2)} MB`;
   }
 };
+
+
+
+function isAppleBrowser() {
+  const elem = document.createElement('canvas');
+  if (!!(elem.getContext && elem.getContext('2d'))) {
+    return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  }
+  return false;
+}
+
+// if (isAppleBrowser()) {
+//   // The browser is in the Apple ecosystem
+//   // You can perform specific actions or checks for Apple devices here
+// } else {
+//   // Not in the Apple ecosystem
+// }
