@@ -31,7 +31,7 @@ export const parameterSlice = createSlice({
     setAlertText: (state, action) => {
       state.alertText = action.payload;
     },
-    reset: () => initialState,
+    resetParameter: () => initialState,
   },
 });
 
@@ -42,7 +42,7 @@ export const {
   setAlertStatus,
   setAlertText,
   setFileType,
-  reset,
+  resetParameter,
 } = parameterSlice.actions;
 
 export default parameterSlice.reducer;

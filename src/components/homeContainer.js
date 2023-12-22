@@ -17,6 +17,7 @@ import Typography from "@mui/material/Typography";
 import UploadPage from "./uploadPage";
 import { Button } from "@mui/material";
 import { reset } from "../features/image_/imageSlice";
+import { resetParameter } from "../features/parameter/parameterSlice";
 
 const drawerWidth = 240;
 
@@ -32,6 +33,7 @@ function DrawerAppBar(props) {
 
   const resetImageHandle = () => {
     dispatch(reset());
+    dispatch(resetParameter());
   }
 
   const drawer = (

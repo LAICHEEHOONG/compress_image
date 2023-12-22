@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InputFileUpload from "./uploadFile";
-import LinearWithValueLabel from "./progress";
 import ParametersFields from "./parameters";
 import Linear from "./linear";
 
@@ -29,7 +28,6 @@ const UploadPage = () => {
       <ParametersFields />
 
       {progressOpen ? <Linear /> : <InputFileUpload />}
-      {/* <InputFileUpload /> */}
     </div>
   );
 };

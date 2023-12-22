@@ -1,22 +1,21 @@
-import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { setAlertStatus } from '../features/parameter/parameterSlice';
+import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { setAlertStatus } from "../features/parameter/parameterSlice";
 
 export default function AlertSnackbar() {
-
   const dispatch = useDispatch();
-  const alertStatus = useSelector(state => state.parameter.openAlert);
-  const alserText = useSelector(state => state.parameter.alertText);
+  const alertStatus = useSelector((state) => state.parameter.openAlert);
+  const alserText = useSelector((state) => state.parameter.alertText);
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
-    dispatch(setAlertStatus(false))
+    dispatch(setAlertStatus(false));
   };
 
   const action = (
@@ -39,7 +38,7 @@ export default function AlertSnackbar() {
     <div>
       <Snackbar
         open={alertStatus}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right'  }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={6000}
         onClose={handleClose}
         message={alserText}
